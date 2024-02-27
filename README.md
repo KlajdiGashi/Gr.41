@@ -1,4 +1,4 @@
-![image](https://github.com/KlajdiGashi/IOSapplication/assets/118850687/1605063f-dfaf-4cb9-b8b5-b56b69973745)### General info
+### General info
 
 A [university](https://fiek.uni-pr.edu) team project organized by Mobile Development subject.
 
