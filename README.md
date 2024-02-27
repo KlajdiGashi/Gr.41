@@ -11,8 +11,10 @@ The Newspaper App Mobile provides users with:
 The essential purpose of a newspaper article is to inform or update the readers about a particular event, issue, person, or topic. [^1]
 
 ### Implementing the idea
-The implementation of our idea first begins with creating views(views represent text, images, shapes, custom drawings, and compositions of any and all of these together)[^2]
+The implementation of our idea first begins with creating views (views represent text, images, shapes, custom drawings, and compositions of any and all of these together) [^2]
+
     * Views (X)
+    
     * A database for storing the user's information.
 
 
