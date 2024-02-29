@@ -215,13 +215,15 @@ struct SettingsView: View {
                         }
                     }
                 } label: {
-                    Text("Log Out")
-                        .textCase(.none)
-                        .foregroundColor(.red)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
+                    NavigationLink(destination: LoginView()) {
+                        Text("Log Out")
+                            .textCase(.none)
+                            .foregroundColor(.red)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                    }
                 }
             }
 
