@@ -1,16 +1,16 @@
 import SwiftUI
-import FirebaseAuth	
+import FirebaseAuth
 import CryptoKit
 
 @MainActor
 final class SettingsViewModel: ObservableObject {
-      @Published var name = ""
-      @Published var phonenumber = ""
-      @Published var username = ""
-      @Published var email = ""
-      @Published var password =     ""
-      @Published var confirmpassword = ""
-    
+    @Published var name = ""
+    @Published var phonenumber = ""
+    @Published var username = ""
+    @Published var email = ""
+    @Published var password = ""
+    @Published var confirmpassword = ""
+
     func saveChanges(name: String, email: String, phoneNumber: String, password: String, confirmPassword: String) async throws {
         guard password == confirmPassword else {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Passwords do not match"])
@@ -20,21 +20,20 @@ final class SettingsViewModel: ObservableObject {
             guard let user = Auth.auth().currentUser else {
                 throw URLError(.badServerResponse)
             }
-            
+
             let hashedPassword = try await AuthenticationManager.shared.hashPassword(password: password)
-            
-            try await AuthenticationManager.shared.updateUserInfo(name: name, email: email,phoneNumber: phoneNumber,password: password)
-            
+
+            try await AuthenticationManager.shared.updateUserInfo(name: name, email: email, phoneNumber: phoneNumber, password: password)
+
             try await AuthenticationManager.shared.updateUserPassword(newPassword: password)
-            
-            try await updateFirestoreUserInfo(uid: user.uid, name: name, email: email,
-                phoneNumber: phoneNumber)
-            
+
+            try await updateFirestoreUserInfo(uid: user.uid, name: name, email: email, phoneNumber: phoneNumber)
+
         } catch {
             throw error
         }
     }
-    
+
     func signOut() async throws {
         do {
             try await AuthenticationManager.shared.signOut()
@@ -42,7 +41,7 @@ final class SettingsViewModel: ObservableObject {
             throw error
         }
     }
-    
+
     private func updateFirestoreUserInfo(uid: String, name: String, email: String, phoneNumber: String) async throws {
         do {
             guard let user = Auth.auth().currentUser else {
@@ -54,22 +53,19 @@ final class SettingsViewModel: ObservableObject {
             throw error
         }
     }
-    
-       
 }
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
-    
+
     @State private var email: String = ""
     @State private var phoneNumber: String = ""
     @State private var name: String = ""
     @State private var confirmEmail: String = ""
     @State private var password: String = ""
-    @State private var confirmPassword:String = ""
+    @State private var confirmPassword: String = ""
     @Binding var showSigningView: Bool
     @State private var isPasswordVisible: Bool = false
-
 
     var body: some View {
         VStack(spacing: 20) {
@@ -80,7 +76,7 @@ struct SettingsView: View {
                 .font(.system(size: 22))
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
-            
+
             TextField("Phone Number", text: $phoneNumber)
                 .autocapitalization(.none)
                 .textCase(.none)
@@ -88,32 +84,32 @@ struct SettingsView: View {
                 .font(.system(size: 22))
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
-            
+
             TextField("Email", text: $email)
-                .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-                .textCase(.none )
+                .autocapitalization(.none)
+                .textCase(.none)
                 .padding()
                 .font(.system(size: 22))
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
-            
+
             TextField("Confirm Email", text: $confirmEmail)
-                .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-                .textCase(.none )
+                .autocapitalization(.none)
+                .textCase(.none)
                 .padding()
                 .font(.system(size: 22))
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
-            
+
             ZStack(alignment: .trailing) {
                 if isPasswordVisible {
                     TextField("Password", text: $viewModel.password)
-                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                        .autocapitalization(.none)
                         .padding()
                         .font(.system(size: 20))
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(10)
-                        
+
                         .overlay(
                             Button(action: {
                                 isPasswordVisible.toggle()
@@ -145,15 +141,16 @@ struct SettingsView: View {
                         )
                 }
             }
+
             ZStack(alignment: .trailing) {
                 if isPasswordVisible {
                     TextField("Confrim Password", text: $viewModel.confirmpassword)
-                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                        .autocapitalization(.none)
                         .padding()
                         .font(.system(size: 20))
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(10)
-                        
+
                         .overlay(
                             Button(action: {
                                 isPasswordVisible.toggle()
@@ -185,7 +182,8 @@ struct SettingsView: View {
                         )
                 }
             }
-            HStack{
+
+            HStack {
                 Button {
                     Task {
                         do {
@@ -202,11 +200,9 @@ struct SettingsView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
-                    
+
                 }
-                
-                
-                
+
                 Button {
                     Task {
                         do {
@@ -240,7 +236,6 @@ struct SettingsView: View {
         }
         .padding()
         .navigationBarTitle("Settings", displayMode: .inline)
-        
     }
 }
 
