@@ -71,7 +71,6 @@ struct SignupView:View {
         
         VStack(){
         
-       
             Spacer()
                 .frame(height:10)
             
@@ -109,7 +108,7 @@ struct SignupView:View {
                             .padding(.trailing, 8),
                             alignment: .trailing
                         )
-                } else {
+                 } else {
                     SecureField("Password", text: $viewmodel.password)
                         .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                         .padding()
@@ -125,14 +124,14 @@ struct SignupView:View {
                                     .foregroundColor(.gray)
                                     .padding(.trailing, 19)
                             }
-                                .padding(.trailing, 8),
+                            .padding(.trailing, 8),
                             alignment: .trailing
                         )
                 }
             }
             Spacer()
                 .frame(height: 10)
-            .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(true)
             
             Spacer()
                 .frame(height: 10)
@@ -141,7 +140,7 @@ struct SignupView:View {
             NavigationLink(destination: EmailConfirmationView(), isActive: $isAccountCreate) {
                         EmptyView()
                     }
-                    .hidden()
+                .hidden()
             
             Button	{
                 viewmodel.SignUp()
@@ -157,14 +156,12 @@ struct SignupView:View {
                     .frame(width: 300, height: 50)
             }
                         .padding(.top, 20)
-                        NavigationLink(destination: MainView())
-            {
-    
-                EmptyView()
-            }
-            .hidden()
+                        NavigationLink(destination: MainView()) {
+                            EmptyView()  }
+                .hidden()
             
-                        Spacer()
+            Spacer()
+            
             HStack{
                 NavigationLink(destination:LoginView()){
                     Text("Already have an account?")
@@ -172,20 +169,19 @@ struct SignupView:View {
                 }
                 
             }
-                    }
-                    .padding()
-                    .navigationBarTitle("Sign Up", displayMode: .inline)
-                    .navigationBarBackButtonHidden(true)
+        }
+        .padding()
+        .navigationBarTitle("Sign Up", displayMode: .inline)
+        .navigationBarBackButtonHidden(true)
                    
     }
         
         
             }
-
-            struct SignupView_Previews: PreviewProvider {
-                static var previews: some View {
-                    NavigationStack {
-                        SignupView()
-                    }
-                }
-                     }
+struct SignupView_Previews: PreviewProvider {
+    static var previews: some View {
+            NavigationStack {
+                    SignupView()
+        }
+    }
+}
