@@ -160,8 +160,8 @@ struct LoginView: View {
             .padding()
             .navigationBarTitle("Login", displayMode: .inline)
             .onAppear{
-                let authuser=try? AuthenticationManager.shared.getAuthenticatedUser()
-                self.showSignInView = authuser == nil
+            //    let authuser=try? AuthenticationManager.shared.getAuthenticatedUser()
+            //    self.showSignInView = authuser == nil
             }
 
         }
