@@ -91,17 +91,35 @@ final class AuthenticationManager {
         try await user.sendEmailVerification()
     }
 
-    internal  func updateUserInfoInFirestore(uid: String, name: String, email: String, phoneNumber: String, password: String) async throws {
+    
+    internal func updateUserInfoInFirestore(uid: String, name: String, email: String, phoneNumber: String, password: String) async throws {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(uid)
 
-        
-        try await userRef.updateData([
-            "name": name,
-            "email": email,
-            "phoneNumber": phoneNumber,
-            "password": password
-        ])
+        var dataToUpdate: [String: Any] = [:]
+
+        if !name.isEmpty {
+            dataToUpdate["name"] = name
+        }
+
+        if !email.isEmpty {
+            dataToUpdate["email"] = email
+        }
+
+        if !phoneNumber.isEmpty {
+            dataToUpdate["phoneNumber"] = phoneNumber
+        }
+
+        if !password.isEmpty {
+            dataToUpdate["password"] = password
+        }
+
+        do {
+            try await userRef.setData(dataToUpdate, merge: true)
+        } catch {
+            print("Error updating document: \(error.localizedDescription)")
+            throw error
+        }
     }
 
     func updateUserPassword(newPassword: String) async throws {
