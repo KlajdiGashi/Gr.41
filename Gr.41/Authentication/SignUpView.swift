@@ -4,6 +4,7 @@ import FirebaseAuth
 
 @MainActor
 final class SignupViewModel: ObservableObject{
+    let sqliteManager = SQLiteManager.shared
     @Published var name = ""
     @Published var phonenumber = ""
     @Published var username = ""
@@ -15,6 +16,7 @@ final class SignupViewModel: ObservableObject{
     func SignUp(){
         
         guard !email.isEmpty, !password.isEmpty else {
+              let sqliteManager = SQLiteManager.shared
             print("No email or password found")
             return
         }
@@ -25,6 +27,8 @@ final class SignupViewModel: ObservableObject{
                 
                 let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password: password)
 
+                // SQLite operation
+                sqliteManager.createUser(email: email, password: hashedPassword, name: name)
                 
                 let documentPath = "users/\(returnedUserData.uid)"
                 try await AuthenticationManager.shared.updateDocumentIfExistOrCreate(documentPath, data: [
