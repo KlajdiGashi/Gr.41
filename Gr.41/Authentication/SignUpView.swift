@@ -2,8 +2,6 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
-
-
 @MainActor
 final class SignupViewModel: ObservableObject{
     @Published var name = ""
@@ -20,23 +18,7 @@ final class SignupViewModel: ObservableObject{
             print("No email or password found")
             return
         }
-        Task{
-            do{
-                let returnedUserData=try await AuthenticationManager.shared.createUser(email: email, password: password)
-                print("Success")
-                print(returnedUserData)
-                
-                try await AuthenticationManager.shared.sendEmailVerification()
-                
-                
-            }catch{
-                print("error:\(error)")
-            }
-            
-        }
-        
-    }
-    Task {
+     Task {
             do {
              
                 let hashedPassword = try await AuthenticationManager.shared.hashPassword(password: password)
@@ -56,16 +38,19 @@ final class SignupViewModel: ObservableObject{
 
                 try await AuthenticationManager.shared.sendEmailVerification()
 
-            } catch {
+                } catch {
                 print("error: \(error)")
             }
         }
+    }
+    
     
     func sendEmailVerification() {
             Task {
                 do {
                     try await AuthenticationManager.shared.sendEmailVerification()
-                } catch {
+                } 
+                catch {
                     print("error: \(error)")
                 }
             }
