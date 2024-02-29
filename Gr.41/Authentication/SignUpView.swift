@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 
 
@@ -35,6 +36,30 @@ final class SignupViewModel: ObservableObject{
         }
         
     }
+    Task {
+            do {
+             
+                let hashedPassword = try await AuthenticationManager.shared.hashPassword(password: password)
+                
+                let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password: password)
+
+                
+                let documentPath = "users/\(returnedUserData.uid)"
+                try await AuthenticationManager.shared.updateDocumentIfExistOrCreate(documentPath, data: [
+                    "email": email,
+                    "password": hashedPassword,
+                   
+                ])
+
+                print("Success")
+                print(returnedUserData)
+
+                try await AuthenticationManager.shared.sendEmailVerification()
+
+            } catch {
+                print("error: \(error)")
+            }
+        }
     
     func sendEmailVerification() {
             Task {
